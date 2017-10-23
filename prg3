@@ -1,0 +1,58 @@
+# Program to remove a number from an array of 4 values
+# The format is: <instruction mem. address>: <OPCODE> <COMMA SEPARATED OPERANDS>;
+# All numbers are decimal integers
+
+# create 4 indices in (R0-R3):
+0: LI R1, 1;  # R1 = index 1, R0 already index 0
+1: LI R2, 2;  # R2 = index 2
+2: LI R3, 3;  # R3 = index 3
+3: LI R4, 4;  # R4 = index 4
+
+# copy from mem to registers (11-14):
+4: LD R11, R0;  # load data from mem to R11
+5: LD R12, R1;  # to R12, list entry 2
+6: LD R13, R2;  # to R13, list entry 3
+7: LD R14, R3;  # to R14, list entry 4
+8: LD R15, R4;  # to R15, number to remove
+
+# make jump registers for all 4 element comparison in list
+9: LI R5, 22;  # R5 set program counter to 22
+10: LI R8, 31; # for jump over 0 assign.
+11: LI R6, 15;
+12: LI R7, 13;
+13: ADD R5, R5, R2; # increment R5 by 2
+14: JR R6;
+
+15: ADD R6, R6, R2; # increment R6 by 2
+16: JEQ R5, R11, R15; # go to R5 if match
+
+17: ADD R6, R6, R2; # increment R6 by 2
+18: JEQ R5, R12, R15; # go to R5 if match
+
+19: ADD R6, R6, R2; # increment R6 by 2
+20: JEQ R5, R13, R15; # go to R5 if match
+
+21: ADD R6, R6, R2; # increment R6 by 2
+22: JEQ R5, R14, R15; # go to R5 if match
+
+23: JR R8; # skip assigning zeros
+
+# override registers if number match
+24: LI R11, 0;
+25: JR R7;
+
+26: LI R12, 0;
+27: JR R7;
+
+28: LI R13, 0;
+29: JR R7;
+
+30: LI R14, 0;
+
+# Overwrite to memory
+31: SD R11, R0;
+32: SD R12, R1;
+33: SD R13, R2;
+34: SD R14, R3;
+
+35: END;
